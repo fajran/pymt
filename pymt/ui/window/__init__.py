@@ -158,12 +158,18 @@ class BaseWindow(EventDispatcher):
         if 'top' in kwargs:
             params['top'] = kwargs.get('top')
         else:
-            params['top'] = pymt.pymt_config.getint('graphics', 'top')
+            try:
+                params['top'] = int(pymt.pymt_config.get('graphics', 'top'))
+            except ValueError:
+                params['top'] = None
 
         if 'left' in kwargs:
             params['left'] = kwargs.get('left')
         else:
-            params['left'] = pymt.pymt_config.getint('graphics', 'left')
+            try:
+                params['left'] = int(pymt.pymt_config.get('graphics', 'left'))
+            except ValueError:
+                params['left'] = None
 
         # show fps if asked
         self.show_fps = kwargs.get('show_fps')
