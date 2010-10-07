@@ -41,7 +41,7 @@ class MTWindowPygame(BaseWindow):
         pygame.display.gl_set_attribute(pygame.GL_ALPHA_SIZE, 8)
         pygame.display.set_caption('pymt')
 
-        if params['left'] is None or params['top'] is None
+        if params['left'] is None or params['top'] is None:
             # one of them or both are not valid, don't set position.
             self._pos = None
         else:
