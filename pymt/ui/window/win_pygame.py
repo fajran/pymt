@@ -56,9 +56,12 @@ class MTWindowPygame(BaseWindow):
         repeat_rate = float(pymt.pymt_config.get('keyboard', 'repeat_rate'))
         pygame.key.set_repeat(repeat_delay, int(1000. / repeat_rate))
 
-        # set window icon before calling set_mode
-        icon = pygame.image.load(pymt.pymt_config.get('graphics', 'window_icon'))
-        pygame.display.set_icon(icon)
+        #set window icon before calling set_mode
+        try:
+            icon = pygame.image.load(pymt.pymt_config.get('graphics', 'window_icon'))
+            pygame.display.set_icon(icon)
+        except pygame.error:
+            pass
 
         # init ourself size + setmode
         # before calling on_resize
