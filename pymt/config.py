@@ -163,8 +163,8 @@ if not 'PYMT_DOC_INCLUDE' in os.environ:
 
         elif pymt_config_version == 13:
             # add possibility to set the position of windows
-            pymt_config.setdefault('graphics', 'top', -1)
-            pymt_config.setdefault('graphics', 'left', -1)
+            pymt_config.setdefault('graphics', 'top', 'auto')
+            pymt_config.setdefault('graphics', 'left', 'auto')
 
         else:
             # for future.
