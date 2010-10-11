@@ -663,18 +663,72 @@ class SVG(object):
         elif e.tag.endswith('rect'):
             x = 0
             y = 0
+            rx = 0
+            ry = 0
             if 'x' in e.keys():
                 x = float(e.get('x'))
             if 'y' in e.keys():
                 y = float(e.get('y'))
+            if 'rx' in e.keys():
+                rx = float(e.get('rx'))
+                ry = rx
+            if 'ry' in e.keys():
+                ry = float(e.get('ry'))
+                if not 'rx' in e.keys():
+                    rx = ry
             h = float(e.get('height'))
             w = float(e.get('width'))
+            points = self.circle_points / 4
             self.new_path()
-            self.set_position(x, y)
-            self.line_to(x+w,y)
-            self.line_to(x+w,y+h)
-            self.line_to(x,y+h)
-            self.line_to(x,y)
+            self.set_position(x+rx, y)
+            self.line_to(x+w-rx, y)
+
+            if rx > 0 or ry > 0:
+                cx = x+w-rx
+                cy = y
+                for i in range(points):
+                    theta = (i+points) * math.pi/2.0 / points
+                    px = - rx * math.cos(theta)
+                    py = ry - ry * math.sin(theta)
+                    self.line_to(cx+px, cy+py)
+
+            self.line_to(x+w, y+ry)
+
+            if rx > 0 or ry > 0:
+                self.line_to(x+w, y+h-ry)
+                cx = x+w
+                cy = y+h-ry
+                for i in range(points):
+                    theta = i * math.pi/2.0 / points
+                    px = rx * math.cos(theta) - rx
+                    py = ry * math.sin(theta)
+                    self.line_to(cx+px, cy+py)
+
+            self.line_to(x+w-rx, y+h)
+
+            if rx > 0 or ry > 0:
+                self.line_to(x+rx, y+h)
+                cx = x + rx
+                cy = y+h
+                for i in range(points):
+                    theta = (i+points) * math.pi/2.0 / points
+                    px = rx * math.cos(theta)
+                    py = ry * math.sin(theta) - ry
+                    self.line_to(cx+px, cy+py)
+
+            self.line_to(x, y+h-ry)
+
+            if rx > 0 or ry > 0:
+                self.line_to(x, y+ry)
+                cx = x
+                cy = y+ry
+                for i in range(points):
+                    theta = i * math.pi/2.0 / points
+                    px = rx - rx * math.cos(theta)
+                    py = - ry * math.sin(theta)
+                    self.line_to(cx+px, cy+py)
+
+            self.line_to(x+rx, y)
             self.end_path()
         elif e.tag.endswith('polyline') or e.tag.endswith('polygon'):
             pathdata = e.get('points')
